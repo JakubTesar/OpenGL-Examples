@@ -11,10 +11,10 @@ public class Game {
     private static final float vertices[] = {
             -0.5f, -0.5f, 0.0f,
             0.5f, -0.5f, 0.0f,
-            0.5f, 0.5f, 0.0f/*, // Uncomment this for the square
+            0.5f, 0.5f, 0.0f,
             -0.5f, -0.5f, 0.0f,
             -0.5f, 0.5f, 0.0f,
-            0.5f, 0.5f, 0.0f*/
+            0.5f, 0.5f, 0.0f
     };
     private static int triangleVaoId;
     private static int triangleVboId;
