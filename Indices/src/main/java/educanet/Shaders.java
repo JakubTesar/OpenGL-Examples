@@ -1,7 +1,6 @@
 package educanet;
 
 import org.lwjgl.opengl.GL33;
-
 public class Shaders {
     private static final String vertexShaderSource = "#version 330 core\n" +
             "layout (location = 0) in vec3 aPos;\n" +
@@ -14,7 +13,7 @@ public class Shaders {
             "out vec4 FragColor;\n" +
             "void main()\n" +
             "{\n" +
-            "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n" +
+            "   FragColor = vec4(1.0f, 0f, 0f, 1.0f);\n" +
             "}\n";
 
     public static int vertexShaderId;
@@ -31,9 +30,7 @@ public class Shaders {
         GL33.glShaderSource(vertexShaderId, vertexShaderSource);
         GL33.glCompileShader(vertexShaderId);
 
-        // Print the log... TODO: Check for errors
         System.out.println(GL33.glGetShaderInfoLog(vertexShaderId));
-        //endregion
 
         //region: FragmentShader
         // Compile the fragmentShader
@@ -42,7 +39,6 @@ public class Shaders {
 
         // Print the log... TODO: Check for errors
         System.out.println(GL33.glGetShaderInfoLog(fragmentShaderId));
-        //endregion
 
         //region: Shader attachment
         shaderProgramId = GL33.glCreateProgram();
