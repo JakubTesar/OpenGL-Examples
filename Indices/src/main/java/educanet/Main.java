@@ -1,7 +1,4 @@
 package educanet;
-
-import cz.educanet.Shaders;
-import cz.educanet.Square;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL33;

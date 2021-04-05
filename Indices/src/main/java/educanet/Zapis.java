@@ -6,22 +6,21 @@ import java.io.IOException;
 
 public class Zapis {
 
-    public static String readFile(String fileName) {
+    public static String bruh() {
+        String maze = "";
         try {
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            BufferedReader br = new BufferedReader(new FileReader("maze1.txt"));
             String nextline = br.readLine();
-            String hah = "";
+
             while (nextline != null) {
+                maze += nextline + "\n";
                 nextline = br.readLine();
-                hah += nextline;
             }
             br.close();
-            return hah;
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return maze;
     }
 
 }

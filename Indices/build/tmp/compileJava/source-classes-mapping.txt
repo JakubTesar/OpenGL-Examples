@@ -1,8 +1,8 @@
-educanet/Shaders.java
- cz.educanet.Shaders
-educanet/Square.java
- cz.educanet.Square
 educanet/Zapis.java
  educanet.Zapis
+educanet/Shaders.java
+ educanet.Shaders
+educanet/Square.java
+ educanet.Square
 educanet/Main.java
  educanet.Main
