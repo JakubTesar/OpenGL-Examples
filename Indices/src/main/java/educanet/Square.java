@@ -19,19 +19,31 @@ public class Square {
     private int squareColorId;
 
     public Square(float x, float y, float size) {
-        float[] colors = {
-                1f, 0f, 0f, 1f,
-                0f, 1f, 0f, 1f,
-                0f, 0f, 1f, 1f,
-                1f, 0f, 0f, 1f,
-        };
+        float longest = (float) Math.sqrt(3);
 
+        float a1 = (float) Math.sqrt(((x + size) * (x + size)) + (y * y));  // 0 -> Top right
+        float b1 = (float) Math.sqrt(((x + size) * (x + size)) + ((y - size) * (y - size)));// 1 -> Bottom right
+        float c1 = (float) Math.sqrt((x * x) + ((y - size) * (y - size)));   // 2 -> Bottom left
+        float d1 = (float) Math.sqrt((x * x) + (y * y));                     // 3 -> Top left
+
+        float a2 = (a1 / longest);
+        float b2 = (b1 / longest);
+        float c2 = (c1 / longest);
+        float d2 = (d1 / longest);
+
+        float[] colors = {
+                (float) (a2 + 0.5), (float) (a2 + 0.2), a2, 1f,
+                (float) (b2 + 0.5), (float) (b2 + 0.2), b2, 1f,
+                (float) (c2 + 0.5), (float) (c2 + 0.2), c2, 1f,
+                (float) (d2 + 0.5), (float) (d2 + 0.2), d2, 1f,
+        };
         float[] vertices = {
                 x + size, y, 0.0f, // 0 -> Top right
                 x + size, y - size, 0.0f, // 1 -> Bottom right
                 x, y - size, 0.0f, // 2 -> Bottom left
                 x, y, 0.0f, // 3 -> Top left
         };
+
         this.vertices = vertices;
         squareVaoId = GL33.glGenVertexArrays();
         squareEboId = GL33.glGenBuffers();
