@@ -118,6 +118,11 @@ public class Game {
         } if(GLFW.glfwGetKey(window, GLFW.GLFW_KEY_A) == GLFW.GLFW_PRESS) {
             matrix = matrix.translate(-0.01f, 0f, 0f);
         }
+        if(GLFW.glfwGetKey(window, GLFW.GLFW_KEY_S) == GLFW.GLFW_PRESS) {
+            matrix = matrix.translate(0f, -0.01f, 0f);
+        } if(GLFW.glfwGetKey(window, GLFW.GLFW_KEY_W) == GLFW.GLFW_PRESS) {
+            matrix = matrix.translate(0f, 0.01f, 0f);
+        }
 
         // TODO: Send to GPU only if position updated
         matrix.get(matrixFloatBuffer);
