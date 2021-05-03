@@ -6,15 +6,14 @@ import java.io.IOException;
 
 public class Zapis {
 
-    public static String bruh() {
+    public static String loadText(String textFile) {
         String maze = "";
         try {
-            BufferedReader br = new BufferedReader(new FileReader("maze1.txt"));
-            String nextline = br.readLine();
-
-            while (nextline != null) {
-                maze += nextline + "\n";
-                nextline = br.readLine();
+            BufferedReader br = new BufferedReader(new FileReader(textFile));
+            String line = br.readLine();
+            for (int i = 0; line != null; i++) {
+                maze += line + "\n";
+                line = br.readLine();
             }
             br.close();
         } catch (IOException e) {
@@ -22,5 +21,4 @@ public class Zapis {
         }
         return maze;
     }
-
 }
