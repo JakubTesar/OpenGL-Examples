@@ -49,12 +49,7 @@ public class Square {
                 1f, 1f, 1f, 1f,
                 1f, 1f, 1f, 1f,
         };
-        redCl = new float[]{
-                1f, 0f, 0f, 1f,
-                1f, 0f, 0f, 1f,
-                1f, 0f, 0f, 1f,
-                1f, 0f, 0f, 1f,
-        };
+
         whiteCl = new float[]{
                 1f, 1f, 1f, 1f,
                 1f, 1f, 1f, 1f,
@@ -70,7 +65,6 @@ public class Square {
         };
 
         this.vertices = vertices;
-        cfb = BufferUtils.createFloatBuffer(redCl.length).put(redCl).flip();
 
         squareVaoId = GL33.glGenVertexArrays();
         squareEboId = GL33.glGenBuffers();
@@ -123,35 +117,22 @@ public class Square {
         GL33.glDrawElements(GL33.GL_TRIANGLES, indices.length, GL33.GL_UNSIGNED_INT, 0);
     }
 
+    private float xm = 0.01f;
+    private float ym = 0.01f;
 
     public void update(long window) {
-        if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_D) == GLFW.GLFW_PRESS) {
-            matrix = matrix.translate(0.01f, 0f, 0f);
-            this.x = x + 0.01f;
+        matrix = matrix.translate(xm, ym, 0f);
+        x += xm;
+        y += ym;
+
+        if (x + s > 1 || x < -1) {
+            xm *= -1;
         }
-        if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_A) == GLFW.GLFW_PRESS) {
-            matrix = matrix.translate(-0.01f, 0f, 0f);
-            this.x = x - 0.01f;
-        }
-        if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_W) == GLFW.GLFW_PRESS) {
-            matrix = matrix.translate(0f, 0.01f, 0f);
-            this.y = y + 0.01f;
-        }
-        if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_S) == GLFW.GLFW_PRESS) {
-            matrix = matrix.translate(0, -0.01f, 0f);
-            this.y = y - 0.01f;
+        if (y > 1 || y - s < -1) {
+            ym *= -1;
         }
         matrix.get(matrixFloatBuffer);
         GL33.glUniformMatrix4fv(uniformMatrixLocation, false, matrixFloatBuffer);
-    }
-
-    public void red() {
-        GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, squareColorId);
-        cfb.put(redCl).flip();
-
-        GL33.glBufferData(GL33.GL_ARRAY_BUFFER, cfb, GL33.GL_STATIC_DRAW);
-        GL33.glVertexAttribPointer(1, 4, GL33.GL_FLOAT, false, 0, 0);
-        GL33.glEnableVertexAttribArray(1);
     }
 
     public void white() {
