@@ -4,8 +4,11 @@ import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL33;
+import org.lwjgl.stb.STBImage;
+import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -22,11 +25,13 @@ public class Square {
     private int squareEboId;
     private int squareColorId;
 
+    private static int textureIndicesId;
+    private static int textureId;
+
     public static int uniformMatrixLocation;
     public Matrix4f matrix;
     public FloatBuffer matrixFloatBuffer;
 
-    public float[] redCl;
     public float[] whiteCl;
 
     private float x;
@@ -64,12 +69,25 @@ public class Square {
                 x, y, 0.0f, // 3 -> Top left
         };
 
+        float[] textures = {
+                1.0f, 0.0f,
+                1.0f, 1.0f,
+                0.0f, 1.0f,
+                0.0f, 0.0f,
+        };
+
         this.vertices = vertices;
 
         squareVaoId = GL33.glGenVertexArrays();
         squareEboId = GL33.glGenBuffers();
         squareVboId = GL33.glGenBuffers();
         squareColorId = GL33.glGenBuffers();
+
+        textureIndicesId = GL33.glGenBuffers();
+        textureId = GL33.glGenTextures();
+
+        loadImage();
+
 
         uniformMatrixLocation = GL33.glGetUniformLocation(Shaders.shaderProgramId, "matrix");
 
@@ -103,16 +121,31 @@ public class Square {
         matrix.get(matrixFloatBuffer);
         GL33.glUniformMatrix4fv(uniformMatrixLocation, false, matrixFloatBuffer);
 
-        MemoryUtil.memFree(fb);
-        MemoryUtil.memFree(ib);
+
+
+        // Change to Textures...
+        // Tell OpenGL we are currently writing to this buffer (colorsId)
+        GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, textureIndicesId);
+
+        FloatBuffer tb = BufferUtils.createFloatBuffer(textures.length)
+                .put(textures)
+                .flip();
+
+        // Send the buffer (positions) to the GPU
+        GL33.glBufferData(GL33.GL_ARRAY_BUFFER, tb, GL33.GL_STATIC_DRAW);
+        GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
+        GL33.glEnableVertexAttribArray(2);
+
+        // Clear the buffer from the memory (it's saved now on the GPU, no need for it here)
+        MemoryUtil.memFree(cfb);
+        MemoryUtil.memFree(tb);
     }
 
     public void render() {
-        matrix.get(matrixFloatBuffer);
-        GL33.glUniformMatrix4fv(uniformMatrixLocation, false, matrixFloatBuffer);
-
         GL33.glUseProgram(Shaders.shaderProgramId);
 
+        // Draw using the glDrawElements function
+        GL33.glBindTexture(GL33.GL_TEXTURE_2D, textureId);
         GL33.glBindVertexArray(squareVaoId);
         GL33.glDrawElements(GL33.GL_TRIANGLES, indices.length, GL33.GL_UNSIGNED_INT, 0);
     }
@@ -134,6 +167,24 @@ public class Square {
         matrix.get(matrixFloatBuffer);
         GL33.glUniformMatrix4fv(uniformMatrixLocation, false, matrixFloatBuffer);
     }
+    private static void loadImage() {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+            IntBuffer comp = stack.mallocInt(1);
+
+            ByteBuffer img = STBImage.stbi_load("Sebastian Castelanos.png", w, h, comp, 3);
+            if (img != null) {
+                img.flip();
+
+                GL33.glBindTexture(GL33.GL_TEXTURE_2D, textureId);
+                GL33.glTexImage2D(GL33.GL_TEXTURE_2D, 0, GL33.GL_RGB, w.get(), h.get(), 0, GL33.GL_RGB, GL33.GL_UNSIGNED_BYTE, img);
+                GL33.glGenerateMipmap(GL33.GL_TEXTURE_2D);
+
+                STBImage.stbi_image_free(img);
+            }
+        }
+    }
 
     public void white() {
         GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, squareColorId);
@@ -143,15 +194,12 @@ public class Square {
         GL33.glVertexAttribPointer(1, 4, GL33.GL_FLOAT, false, 0, 0);
         GL33.glEnableVertexAttribArray(1);
     }
-
     public float getX() {
         return x;
     }
-
     public float getY() {
         return y;
     }
-
     public float getS() {
         return s;
     }
