@@ -14,6 +14,7 @@ import java.nio.IntBuffer;
 
 public class Square {
     private float[] vertices;
+    private float frame = 6;
 
     private final int[] indices = {
             0, 1, 3, // First triangle
@@ -39,6 +40,7 @@ public class Square {
     private float s;
 
     private FloatBuffer cfb;
+    private FloatBuffer tb1 = BufferUtils.createFloatBuffer(8);
 
 
     public Square(float x, float y, float s) {
@@ -69,12 +71,6 @@ public class Square {
                 x, y, 0.0f, // 3 -> Top left
         };
 
-        float[] textures = {
-                1.0f, 0.0f,
-                1.0f, 1.0f,
-                0.0f, 1.0f,
-                0.0f, 0.0f,
-        };
 
         this.vertices = vertices;
 
@@ -121,24 +117,10 @@ public class Square {
         matrix.get(matrixFloatBuffer);
         GL33.glUniformMatrix4fv(uniformMatrixLocation, false, matrixFloatBuffer);
 
-
-
-        // Change to Textures...
-        // Tell OpenGL we are currently writing to this buffer (colorsId)
-        GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, textureIndicesId);
-
-        FloatBuffer tb = BufferUtils.createFloatBuffer(textures.length)
-                .put(textures)
-                .flip();
-
-        // Send the buffer (positions) to the GPU
-        GL33.glBufferData(GL33.GL_ARRAY_BUFFER, tb, GL33.GL_STATIC_DRAW);
-        GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
-        GL33.glEnableVertexAttribArray(2);
-
         // Clear the buffer from the memory (it's saved now on the GPU, no need for it here)
         MemoryUtil.memFree(cfb);
-        MemoryUtil.memFree(tb);
+        MemoryUtil.memFree(tb1);
+
     }
 
     public void render() {
@@ -150,30 +132,136 @@ public class Square {
         GL33.glDrawElements(GL33.GL_TRIANGLES, indices.length, GL33.GL_UNSIGNED_INT, 0);
     }
 
-    private float xm = 0.01f;
-    private float ym = 0.01f;
-
     public void update(long window) {
-        matrix = matrix.translate(xm, ym, 0f);
-        x += xm;
-        y += ym;
+        float[] textures1 = {
+                0.16f, 0.0f,
+                0.16f, 1f,
+                0.0f, 1f,
+                0.0f, 0.0f,
+        };
+        float[] textures2 = {
+                0.32f, 0.0f,
+                0.32f, 1f,
+                0.16f, 1f,
+                0.16f, 0.0f,
+        };
+        float[] textures3 = {
+                0.48f, 0.0f,
+                0.48f, 1f,
+                0.32f, 1f,
+                0.32f, 0.0f,
+        };
 
-        if (x + s > 1 || x < -1) {
-            xm *= -1;
+        float[] textures4 = {
+                0.64f, 0.0f,
+                0.64f, 1f,
+                0.48f, 1f,
+                0.48f, 0.0f,
+        };
+
+        float[] textures5 = {
+                0.80f, 0.0f,
+                0.80f, 1f,
+                0.64f, 1f,
+                0.64f, 0.0f,
+        };
+        float[] textures6 = {
+                0.96f, 0.0f,
+                0.96f, 1f,
+                0.8f, 1f,
+                0.8f, 0f,
+        };
+
+
+        if ((int)frame == 6) {
+            GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, textureIndicesId);
+
+            tb1.put(textures1).flip();
+
+            // Send the buffer (positions) to the GPU
+            GL33.glBufferData(GL33.GL_ARRAY_BUFFER, tb1, GL33.GL_STATIC_DRAW);
+            GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
+            GL33.glEnableVertexAttribArray(2);
+            System.out.println("btuh1");
+            frame -= 0.1;
         }
-        if (y > 1 || y - s < -1) {
-            ym *= -1;
+        if ((int)frame == 5) {
+            GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, textureIndicesId);
+            tb1.clear().put(textures2).flip();
+
+
+            // Send the buffer (positions) to the GPU
+            GL33.glBufferData(GL33.GL_ARRAY_BUFFER, tb1, GL33.GL_STATIC_DRAW);
+            GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
+            GL33.glEnableVertexAttribArray(2);
+            System.out.println("btuh2");
+            frame -= 0.1;
         }
-        matrix.get(matrixFloatBuffer);
+        if ((int)frame == 4) {
+            GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, textureIndicesId);
+            tb1.clear()
+                    .put(textures3)
+                    .flip();
+
+            // Send the buffer (positions) to the GPU
+            GL33.glBufferData(GL33.GL_ARRAY_BUFFER, tb1, GL33.GL_STATIC_DRAW);
+            GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
+            GL33.glEnableVertexAttribArray(2);
+            System.out.println("btuh3");
+            frame -= 0.1;
+        }
+        if ((int)frame == 3) {
+            GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, textureIndicesId);
+            tb1.clear()
+                    .put(textures4)
+                    .flip();
+
+            // Send the buffer (positions) to the GPU
+            GL33.glBufferData(GL33.GL_ARRAY_BUFFER, tb1, GL33.GL_STATIC_DRAW);
+            GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
+            GL33.glEnableVertexAttribArray(2);
+            System.out.println("btuh4");
+            frame -= 0.1;
+
+        }
+        if ((int)frame == 2) {
+            GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, textureIndicesId);
+            tb1.clear()
+                    .put(textures5)
+                    .flip();
+
+            // Send the buffer (positions) to the GPU
+            GL33.glBufferData(GL33.GL_ARRAY_BUFFER, tb1, GL33.GL_STATIC_DRAW);
+            GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
+            GL33.glEnableVertexAttribArray(2);
+            System.out.println("btuh5");
+            frame -= 0.1;
+        }
+        if ((int)frame == 1) {
+            GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, textureIndicesId);
+            tb1.clear()
+                    .put(textures6)
+                    .flip();
+
+            // Send the buffer (positions) to the GPU
+            GL33.glBufferData(GL33.GL_ARRAY_BUFFER, tb1, GL33.GL_STATIC_DRAW);
+            GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
+            GL33.glEnableVertexAttribArray(2);
+            System.out.println("btuh6");
+            frame = 6;
+        }
+
+
         GL33.glUniformMatrix4fv(uniformMatrixLocation, false, matrixFloatBuffer);
     }
+
     private static void loadImage() {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
             IntBuffer comp = stack.mallocInt(1);
 
-            ByteBuffer img = STBImage.stbi_load("Sebastian Castelanos.png", w, h, comp, 3);
+            ByteBuffer img = STBImage.stbi_load("Cyborg_run.png", w, h, comp, 3);
             if (img != null) {
                 img.flip();
 
@@ -194,12 +282,15 @@ public class Square {
         GL33.glVertexAttribPointer(1, 4, GL33.GL_FLOAT, false, 0, 0);
         GL33.glEnableVertexAttribArray(1);
     }
+
     public float getX() {
         return x;
     }
+
     public float getY() {
         return y;
     }
+
     public float getS() {
         return s;
     }
