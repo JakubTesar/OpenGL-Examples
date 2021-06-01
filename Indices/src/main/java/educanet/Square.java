@@ -183,7 +183,7 @@ public class Square {
             GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
             GL33.glEnableVertexAttribArray(2);
             System.out.println("btuh1");
-            frame -= 0.1;
+            frame -= 0.01;
         }
         if ((int)frame == 5) {
             GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, textureIndicesId);
@@ -195,7 +195,7 @@ public class Square {
             GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
             GL33.glEnableVertexAttribArray(2);
             System.out.println("btuh2");
-            frame -= 0.1;
+            frame -= 0.01;
         }
         if ((int)frame == 4) {
             GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, textureIndicesId);
@@ -208,7 +208,7 @@ public class Square {
             GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
             GL33.glEnableVertexAttribArray(2);
             System.out.println("btuh3");
-            frame -= 0.1;
+            frame -= 0.01;
         }
         if ((int)frame == 3) {
             GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, textureIndicesId);
@@ -221,7 +221,7 @@ public class Square {
             GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
             GL33.glEnableVertexAttribArray(2);
             System.out.println("btuh4");
-            frame -= 0.1;
+            frame -= 0.01;
 
         }
         if ((int)frame == 2) {
@@ -235,7 +235,7 @@ public class Square {
             GL33.glVertexAttribPointer(2, 2, GL33.GL_FLOAT, false, 0, 0);
             GL33.glEnableVertexAttribArray(2);
             System.out.println("btuh5");
-            frame -= 0.1;
+            frame -= 0.01;
         }
         if ((int)frame == 1) {
             GL33.glBindBuffer(GL33.GL_ARRAY_BUFFER, textureIndicesId);
